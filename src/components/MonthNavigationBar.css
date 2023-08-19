@@ -1,0 +1,28 @@
+.month-navigation-bar {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    height: 40px;
+    padding: 10px;
+    scroll-behavior: smooth;
+    background-color: #c9082a;
+}
+
+.month-link{
+    margin: 0 10px;
+    display: flex;
+    cursor: pointer;
+    font-weight: 600;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 30px;
+    font-size: 20px;
+    white-space: nowrap;
+    color: #1d428a;
+    transition: color 0.3s;
+}
+.month-link:hover{
+    color: #fff;
+    font-size: 25px;
+}

@@ -1,0 +1,194 @@
+.team-navigation-bar {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    height: 40px;
+    padding: 10px;
+    scroll-behavior: smooth;
+    background-color: #1d428a;
+  }
+  
+  .team-navigation-item {
+    display: flex;
+    color: #c8102e;
+    border-radius: 10px;
+    font-weight: 600;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 15px;
+    font-size: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .5s;
+    transition: font-size .3s;
+  }
+  /* -------code to change teams to team colors when hovered --------*/
+  .team-atl:hover {
+    background-color: #E03A3E;
+    color: #C1D32F;
+    font-size: 25px;
+  }
+  .team-bos:hover {
+    background-color: #007A33;
+    color: #BA9653;
+    font-size: 25px;
+  }
+  .team-bkn:hover {
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 25px;
+  }
+  .team-cha:hover {
+    background-color: #00788C;
+    color: #A1A1A4;
+    font-size: 25px;
+  }
+  .team-chi:hover {
+    background-color: #CE1141;
+    color: #000000;
+    font-size: 25px;
+  }
+  .team-cle:hover {
+    background-color: #860038;
+    color: #FDBB30;
+    font-size: 25px;
+  }
+  .team-dal:hover {
+    background-color: #B8C4CA;
+    color: #002B5C;
+    font-size: 25px;
+  }
+  .team-den:hover {
+    background-color: #FEC524;
+    color: #1D428A;
+    font-size: 25px;
+  }
+  .team-det:hover {
+    background-color: #BEC0C2;
+    color: #1D42BA;
+    font-size: 25px;
+  }
+  .team-gsw:hover {
+    background-color: #FFC72C;
+    color: #1D428A;
+    font-size: 25px;
+  }
+  .team-hou:hover {
+    background-color: #CE1141;
+    color: #373a36;
+    font-size: 25px;
+  }
+  .team-ind:hover {
+    background-color: #FDBB30;
+    color: #002D62;
+    font-size: 25px;
+  }
+  .team-lac:hover {
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 25px;
+  }
+  .team-lal:hover {
+    background-color: #552583;
+    color: #FDB927;
+    font-size: 25px;
+  }
+  .team-mem:hover {
+    background-color: #12173F;
+    color: #5D76A9;
+    font-size: 25px;
+  }
+  .team-mia:hover {
+    background-color: #000000;
+    color: #98002E;
+    font-size: 25px;
+  }
+  .team-mil:hover {
+    background-color: #EEE1C6;
+    color: #00471B;
+    font-size: 25px;
+  }
+  .team-min:hover {
+    background-color: #78BE20;
+    color: #0C2340;
+    font-size: 25px;
+  }
+  .team-nop:hover {
+    background-color: #85714D;
+    color: #0C2340;
+    font-size: 25px;
+  }
+  .team-nyk:hover {
+    background-color: #006BB6;
+    color: #F58426;
+    font-size: 25px;
+  }
+  .team-okc:hover {
+    background-color: #007AC1;
+    color: #EF3B24;
+    font-size: 25px;
+  }
+  .team-orl:hover {
+    background-color: #C4CED4;
+    color: #0077C0;
+    font-size: 25px;
+  }
+  .team-phi:hover {
+    background-color: #ED174C;
+    color: #006BB6;
+    font-size: 25px;
+  }
+  .team-phx:hover {
+    background-color: #E56020;
+    color: #1D1160;
+    font-size: 25px;
+  }
+  .team-por:hover {
+    background-color: #E03A3E;
+    color: #000000;
+    font-size: 25px;
+  }
+  .team-sac:hover {
+    background-color: #5A2D81;
+    color: #63727A;
+    font-size: 25px;
+  }
+  .team-sas:hover {
+    background-color: #C4CED4;
+    color: #000000;  
+    font-size: 25px;
+  }
+  
+  .team-tor:hover {
+    background-color: #CE1141;
+    color: #000000;
+    font-size: 25px;
+  }
+  .team-uta:hover {
+    background-color: #002B5C;
+    color: #F9A01B;
+    font-size: 25px;
+  }
+  .team-was:hover {
+    background-color: #E31837;
+    color: #002B5C;
+    font-size: 25px;
+  }
+  
+  .team-abbreviation {
+    display: block;
+  }
+  
+  .team-name {
+    display: none;
+  }
+  
+  .team-navigation-item:hover .team-abbreviation {
+    display: none;
+  }
+  
+  .team-navigation-item:hover .team-name {
+    display: block;
+  }
+  
