@@ -1,5 +1,5 @@
 import React from 'react';
-import './TeamNavigationBar.css';
+import '/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/components/TeamNavigationbar.css';
 
 const TeamNavigationBar = ({ teams }) => {
   return (

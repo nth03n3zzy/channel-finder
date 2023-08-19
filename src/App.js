@@ -1,7 +1,7 @@
 import React from "react";
-import MonthNavigationBar from "./components/MonthNavigationBar";
-import TeamNavigationBar from './components/TeamNavigationBar';
-import NbaTeamList from "./teamData";
+import MonthNavigationBar from "./components/MonthNavigationBar.js";
+import TeamNavigationBar from '/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/components/TeamNavigationBar.js';
+import NbaTeamList from "/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/Data/TeamData.js";
 import './App.css'; // Import your CSS file here
 
 const App = () => {
