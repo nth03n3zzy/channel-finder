@@ -12,10 +12,10 @@ page = requests.get(url, headers=headers)
 doc = BeautifulSoup(page.text, "html.parser")
 
 # Find all rows with class "Table__TR--sm" row 0 is the heading for the table so it will need to be skipped.
-oddRows = doc.find_all('tr', class_='Table__TR Table__TR--sm Table__even')[14]
+oddRows = doc.find_all('tr', class_='Table__TR Table__TR--sm Table__even')[1]
 
 evenRows = doc.find_all(
-    'tr', class_='filled Table__TR Table__TR--sm Table__even')[13]
+    'tr', class_='filled Table__TR Table__TR--sm Table__even')
 
 # function to find the date contained in the row that is being inputted.
 
@@ -65,43 +65,113 @@ def find_time(row):
 
 
 def find_channel(row):
+
+    # takes us to the table data tag that contains channel information.
     channel_element = row.find_all('td', class_='Table__TD')[3]
 
-    if (channel_element.find('div', class_='network-container')):
+    # checks if there is a div tag with the class network container
+    if channel_element.find('div', class_='network-container'):
+        # check if there is a figure tag nested within
+        if channel_element.find('figure'):
 
-        if (channel_element.find('figure')):
+            channel_figures = channel_element.find_all(
+                'figure')  # Find all figure tags
 
-            channel_figure = channel_element.find('figure')
+            # List to store channel information since there can be more than one channel
+            channel_list = []
 
-            channel_long = channel_figure['class'][-1]
-            channel_break = channel_long.split('-')
-            channel = channel_break[-1]
+            # for loop that will iterate through all the figure tags
+            for figure in channel_figures:
+                # grabs the last element from the class tag channel_long will look like "network-'netwrok name such as espn'""
+                channel_long = figure['class'][-1]
+                # removes the hifen so chanel_break = ['network','espn'].
+                channel_break = channel_long.split('-')
+                # we grab the last element channel = 'espn'.
+                channel = channel_break[-1]
+                # we add the channel to the channel list.
+                channel_list.append(channel)
 
-            print(len(channel_element.find_all('figure')))
-            if(channel_figure.find('figure')):
-                print('second channel found')
-                channel_list = [channel]
+            return channel_list  # channel list is returned.
 
-                second_channel = channel_figure.find('figure')
-
-                second_channel_long = second_channel['class'][-1]
-                second_channel_break = second_channel_long.split('-')
-                second_channel_channnel = second_channel_break[-1]
-
-                channel_list.append(second_channel_channnel)
-
-                return channel_list
-
-            return channel
+        # if the div tag does not have a figure than the channel is in the text of the div tag.
         channel = channel_element.find('div').text
-
         return channel
 
     channel = "NBA League Pass"
-
     return channel
 
+# function to print out the schedule, tag must be passed in as well as class names for the rows, written around the html for the celtics
+# schedule. may have to configured for other teams.
 
-print(find_date(oddRows))
-print((find_channel(oddRows)))
-# print(channel)
+
+def print_schedule(tag, class_odd_rows, class_even_rows):
+    oddrows = doc.find_all(tag, class_=class_odd_rows)
+    evenrows = doc.find_all(tag, class_=class_even_rows)
+    lastrow = doc.find_all(
+        tag, 'filled bb--none Table__TR Table__TR--sm Table__even')[0]
+
+    min_length = min(len(oddrows), len(evenrows))
+
+    for n in range(min_length):
+
+        print(find_date(evenrows[n]))
+        print(find_opponent(evenrows[n]))
+        print(find_time(evenrows[n]))
+        print(find_channel(evenrows[n]))
+
+        if(n > 0):
+            print(find_date(oddrows[n]))
+            print(find_opponent(oddrows[n]))
+            print(find_time(oddrows[n]))
+            print(find_channel(oddrows[n]))
+
+    print(find_date(oddrows[40]))
+    print(find_opponent(oddrows[40]))
+    print(find_time(oddrows[40]))
+    print(find_channel(oddrows[40]))
+
+    print(find_date(lastrow))
+    print(find_opponent(lastrow))
+    print(find_time(lastrow))
+    print(find_channel(lastrow))
+
+
+def get_schedule(tag, class_odd_rows, class_even_rows):
+    oddrows = doc.find_all(tag, class_=class_odd_rows)
+    evenrows = doc.find_all(tag, class_=class_even_rows)
+    lastrow = doc.find_all(
+        tag, 'filled bb--none Table__TR Table__TR--sm Table__even')[0]
+
+    min_length = min(len(oddrows), len(evenrows))
+
+    for n in range(min_length):
+
+        find_date(evenrows[n])
+        find_opponent(evenrows[n])
+        find_time(evenrows[n])
+        find_channel(evenrows[n])
+
+        if(n > 0):
+            find_date(oddrows[n])
+            find_opponent(oddrows[n])
+            find_time(oddrows[n])
+            find_channel(oddrows[n])
+
+    find_date(oddrows[40])
+    find_opponent(oddrows[40])
+    find_time(oddrows[40])
+    find_channel(oddrows[40])
+
+    find_date(lastrow)
+    find_opponent(lastrow)
+    find_time(lastrow)
+    find_channel(lastrow)
+
+# need to make function to create csvs for each team using the get_schedule function
+# url will be used as an input we ill have a list with all team URLS
+# and iterate through to make a csv for each team
+# also need a function to pull the team name from the end of the url and use that to be the csv name.
+
+
+print_schedule('tr', 'Table__TR Table__TR--sm Table__even',
+               'filled Table__TR Table__TR--sm Table__even')
