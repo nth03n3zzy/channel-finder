@@ -4,6 +4,20 @@ import pytz
 from datetime import datetime, timedelta
 from url_list import Url
 
+url = "https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
+
+page = requests.get(url, headers=headers)
+
+doc = BeautifulSoup(page.text, "html.parser")
+
+# Find all rows with class "Table__TR--sm" row 0 is the heading for the table so it will need to be skipped.
+oddRows = doc.find_all('tr', class_='Table__TR Table__TR--sm Table__even')[1]
+
+evenRows = doc.find_all(
+    'tr', class_='filled Table__TR Table__TR--sm Table__even')
+
 # function to find the date contained in the row that is being inputted.
 
 
@@ -98,20 +112,38 @@ def find_channel(row):
 
 
 def print_schedule(tag, class_odd_rows, class_even_rows, url):
-
+    # sets header for scrapper so queries appear to come from a browser
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
 
+    # page data requests.get
     page = requests.get(url, headers=headers)
 
+    # parsing doc
     doc = BeautifulSoup(page.text, "html.parser")
+
+    # finding all the data for all odd rows
     oddrows = doc.find_all(tag, class_=class_odd_rows)
+
+    # finding the data for all even rows cause they have a seperate tag
     evenrows = doc.find_all(tag, class_=class_even_rows)
+
+    # for some reason the person who did the front end for espn gave the last row a sepereate class name.
     lastrow = doc.find_all(
         tag, 'filled bb--none Table__TR Table__TR--sm Table__even')[0]
 
+    # min length calculated for looping and printing logic because the number of even and odd rows are not the same
+    # but we alternate between even and odd so we need to know at what index to stop getting info from the shorter list
+    # so that we dont get an index out of bounds error.
     min_length = min(len(oddrows), len(evenrows))
 
+    # team name scraped from url to use to state the teams schedule we are scraping.
+    team_name = url.split('/')[-3]
+
+    print('------------------', team_name,
+          ' schedule ------------------------')
+
+    # for loop alternating between even and odd rows. first odd row is skipped because it jsut contains header information
     for n in range(min_length):
 
         print(find_date(evenrows[n]))
@@ -119,17 +151,20 @@ def print_schedule(tag, class_odd_rows, class_even_rows, url):
         print(find_time(evenrows[n]))
         print(find_channel(evenrows[n]))
 
+        # if statement is logic to skip first odd row as it is just table header info.
         if(n > 0):
             print(find_date(oddrows[n]))
             print(find_opponent(oddrows[n]))
             print(find_time(oddrows[n]))
             print(find_channel(oddrows[n]))
 
+    # since we stop printing after min length we need to print the last odd row
     print(find_date(oddrows[40]))
     print(find_opponent(oddrows[40]))
     print(find_time(oddrows[40]))
     print(find_channel(oddrows[40]))
 
+    # and since they gave the last row a different class we also have seperate print commands for that.
     print(find_date(lastrow))
     print(find_opponent(lastrow))
     print(find_time(lastrow))
@@ -138,19 +173,31 @@ def print_schedule(tag, class_odd_rows, class_even_rows, url):
 
 def get_schedule(tag, class_odd_rows, class_even_rows, url):
 
+    # sets header for scrapper so queries appear to come from a browser
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
 
-    page = requests.get(url, headers=headers)
+    # page data requests.get
 
+    # parsing doc
     doc = BeautifulSoup(page.text, "html.parser")
 
+    # finding all the data for all odd rows
     oddrows = doc.find_all(tag, class_=class_odd_rows)
+
+    # finding the data for all even rows cause they have a seperate tag
     evenrows = doc.find_all(tag, class_=class_even_rows)
+
+    # for some reason the person who did the front end for espn gave the last row a sepereate class name.
     lastrow = doc.find_all(
         tag, 'filled bb--none Table__TR Table__TR--sm Table__even')[0]
 
+    # min length calculated for looping and printing logic because the number of even and odd rows are not the same
+    # but we alternate between even and odd so we need to know at what index to stop getting info from the shorter list
+    # so that we dont get an index out of bounds error.
     min_length = min(len(oddrows), len(evenrows))
+
+    # for loop alternating between even and odd rows. first odd row is skipped because it jsut contains header information
 
     for n in range(min_length):
 
@@ -159,31 +206,34 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
         find_time(evenrows[n])
         find_channel(evenrows[n])
 
+        # if statement is logic to skip first odd row as it is just table header info.
         if(n > 0):
             find_date(oddrows[n])
             find_opponent(oddrows[n])
             find_time(oddrows[n])
             find_channel(oddrows[n])
 
+    # since we stop printing after min length we need to print the last odd row
     find_date(oddrows[40])
     find_opponent(oddrows[40])
     find_time(oddrows[40])
     find_channel(oddrows[40])
 
+    # and since they gave the last row a different class we also have seperate print commands for that.
     find_date(lastrow)
     find_opponent(lastrow)
     find_time(lastrow)
     find_channel(lastrow)
 
 # need to make function to create csvs for each team using the get_schedule function
-# url will be used as an input we ill have a list with all team URLS
 # and iterate through to make a csv for each team
 # also need a function to pull the team name from the end of the url and use that to be the csv name.
 # ADD FUNSTIONALITY FOR HOME OR AWAY
 
 
 urls = Url.nba_url_list
-for url in urls:
+
+for i in range(len(urls)):
 
     print_schedule('tr', 'Table__TR Table__TR--sm Table__even',
-                   'filled Table__TR Table__TR--sm Table__even', urls[url])
+                   'filled Table__TR Table__TR--sm Table__even', urls[i])
