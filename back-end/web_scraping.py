@@ -178,6 +178,7 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
 
     # page data requests.get
+    page = requests.get(url, headers=headers)
 
     # parsing doc
     doc = BeautifulSoup(page.text, "html.parser")
@@ -192,6 +193,8 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
     lastrow = doc.find_all(
         tag, 'filled bb--none Table__TR Table__TR--sm Table__even')[0]
 
+    schedule_data = []
+
     # min length calculated for looping and printing logic because the number of even and odd rows are not the same
     # but we alternate between even and odd so we need to know at what index to stop getting info from the shorter list
     # so that we dont get an index out of bounds error.
@@ -201,29 +204,59 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
 
     for n in range(min_length):
 
-        find_date(evenrows[n])
-        find_opponent(evenrows[n])
-        find_time(evenrows[n])
-        find_channel(evenrows[n])
+        date = find_date(evenrows[n])
+        opponent = find_opponent(evenrows[n])
+        time = find_time(evenrows[n])
+        channel = find_channel(evenrows[n])
+
+        data_dictionary = {'date': date,
+                           'opponent': opponent,
+                           'time': time,
+                           'channel': channel}
+
+        schedule_data.append(data_dictionary)
 
         # if statement is logic to skip first odd row as it is just table header info.
         if(n > 0):
-            find_date(oddrows[n])
-            find_opponent(oddrows[n])
-            find_time(oddrows[n])
-            find_channel(oddrows[n])
+            date = find_date(oddrows[n])
+            opponent = find_opponent(oddrows[n])
+            time = find_time(oddrows[n])
+            channel = find_channel(oddrows[n])
+
+            data_dictionary = {'date': date,
+                               'opponent': opponent,
+                               'time': time,
+                               'channel': channel}
+
+            schedule_data.append(data_dictionary)
 
     # since we stop printing after min length we need to print the last odd row
-    find_date(oddrows[40])
-    find_opponent(oddrows[40])
-    find_time(oddrows[40])
-    find_channel(oddrows[40])
+    date = find_date(oddrows[40])
+    opponent = find_opponent(oddrows[40])
+    time = find_time(oddrows[40])
+    channel = find_channel(oddrows[40])
+
+    data_dictionary = {'date': date,
+                       'opponent': opponent,
+                       'time': time,
+                       'channel': channel}
+
+    schedule_data.append(data_dictionary)
 
     # and since they gave the last row a different class we also have seperate print commands for that.
-    find_date(lastrow)
-    find_opponent(lastrow)
-    find_time(lastrow)
-    find_channel(lastrow)
+    date = find_date(lastrow)
+    opponent = find_opponent(lastrow)
+    time = find_time(lastrow)
+    channel = find_channel(lastrow)
+
+    data_dictionary = {'date': date,
+                       'opponent': opponent,
+                       'time': time,
+                       'channel': channel}
+
+    schedule_data.append(data_dictionary)
+
+    return schedule_data
 
 # need to make function to create csvs for each team using the get_schedule function
 # and iterate through to make a csv for each team
@@ -233,7 +266,9 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
 
 urls = Url.nba_url_list
 
-for i in range(len(urls)):
+print_schedule('tr', 'Table__TR Table__TR--sm Table__even', 'filled Table__TR Table__TR--sm Table__even',
+               'https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2')
 
-    print_schedule('tr', 'Table__TR Table__TR--sm Table__even',
-                   'filled Table__TR Table__TR--sm Table__even', urls[i])
+# print(find_opponent(oddRows))
+
+# print(find_date(oddRows))
