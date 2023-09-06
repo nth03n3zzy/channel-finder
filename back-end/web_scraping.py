@@ -1,8 +1,11 @@
-from bs4 import BeautifulSoup
-import requests
-import pytz
-from datetime import datetime, timedelta
 from url_list import Url
+from datetime import datetime, timedelta
+from game import Game
+import requests
+from bs4 import BeautifulSoup
+import sys
+sys.path.append('/Users/daddy/Desktop/web_scraper_NBA/channel-finder/back-end')
+
 
 url = "https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2"
 headers = {
@@ -146,29 +149,25 @@ def print_schedule(tag, class_odd_rows, class_even_rows, url):
     # for loop alternating between even and odd rows. first odd row is skipped because it jsut contains header information
     for n in range(min_length):
 
-        print(find_date(evenrows[n]))
-        print(find_opponent(evenrows[n]))
-        print(find_time(evenrows[n]))
-        print(find_channel(evenrows[n]))
+        game = Game(find_date(evenrows[n]), find_opponent(
+            evenrows[n]), find_time(evenrows[n]), find_channel(evenrows[n]))
+        print(game)
 
         # if statement is logic to skip first odd row as it is just table header info.
         if(n > 0):
-            print(find_date(oddrows[n]))
-            print(find_opponent(oddrows[n]))
-            print(find_time(oddrows[n]))
-            print(find_channel(oddrows[n]))
+            game = Game(find_date(oddrows[n]), find_opponent(
+                oddrows[n]), find_time(oddrows[n]), find_channel(oddrows[n]))
+            print(game)
 
     # since we stop printing after min length we need to print the last odd row
-    print(find_date(oddrows[40]))
-    print(find_opponent(oddrows[40]))
-    print(find_time(oddrows[40]))
-    print(find_channel(oddrows[40]))
+    game = Game(find_date(oddrows[40]), find_opponent(
+        oddrows[40]), find_time(oddrows[40]), find_channel(oddrows[40]))
+    print(game)
 
     # and since they gave the last row a different class we also have seperate print commands for that.
-    print(find_date(lastrow))
-    print(find_opponent(lastrow))
-    print(find_time(lastrow))
-    print(find_channel(lastrow))
+    game = Game(find_date(lastrow), find_opponent(lastrow),
+                find_time(lastrow), find_channel(lastrow))
+    print(game)
 
 
 def get_schedule(tag, class_odd_rows, class_even_rows, url):
