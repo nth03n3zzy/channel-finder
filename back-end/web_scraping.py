@@ -6,6 +6,12 @@ from bs4 import BeautifulSoup
 import sys
 sys.path.append('/Users/daddy/Desktop/web_scraper_NBA/channel-finder/back-end')
 
+# need to fix get schedule function the same way i fixed the print chedule function in regards to the enumerated for loop
+# and the order of the even erse odd games printing. and add commenting explaining this and how it works.
+# Need to fix the formatting for the channels so it doesnt print in a list.
+# Look into dealing with time conversion, detecting system time and converting the game time to reflect that accordingly
+#   or possibly perhaps just posinting the imes in pst and est.
+# ADD FUNSTIONALITY FOR HOME OR AWAY
 
 url = "https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2"
 headers = {
@@ -43,7 +49,7 @@ def find_date(row):
 def find_opponent(row):
 
     # opponent title is dound in a anchor tab
-    opponent_element = oddRows.find_next('a', tabindex='0')
+    opponent_element = row.find_next('a', tabindex='0')
 
     # the name is contained in the href for this anchor tab this is an example of the print out
     # "/nba/team/_/name/ny/new-york-knicks"
@@ -64,7 +70,7 @@ def find_opponent(row):
 
 
 def find_time(row):
-    time_element = oddRows.find_all('td', class_='Table__TD')[2]
+    time_element = row.find_all('td', class_='Table__TD')[2]
 
     time_est = time_element.text.strip()
 
@@ -147,17 +153,17 @@ def print_schedule(tag, class_odd_rows, class_even_rows, url):
           ' schedule ------------------------')
 
     # for loop alternating between even and odd rows. first odd row is skipped because it jsut contains header information
-    for n in range(min_length):
+    for r, n in enumerate(range(min_length), start=1):
+
+        game = Game(find_date(oddrows[r]), find_opponent(
+            oddrows[r]), find_time(oddrows[r]), find_channel(oddrows[r]))
+        print(game)
 
         game = Game(find_date(evenrows[n]), find_opponent(
             evenrows[n]), find_time(evenrows[n]), find_channel(evenrows[n]))
         print(game)
 
         # if statement is logic to skip first odd row as it is just table header info.
-        if(n > 0):
-            game = Game(find_date(oddrows[n]), find_opponent(
-                oddrows[n]), find_time(oddrows[n]), find_channel(oddrows[n]))
-            print(game)
 
     # since we stop printing after min length we need to print the last odd row
     game = Game(find_date(oddrows[40]), find_opponent(
@@ -256,11 +262,6 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
     schedule_data.append(data_dictionary)
 
     return schedule_data
-
-# need to make function to create csvs for each team using the get_schedule function
-# and iterate through to make a csv for each team
-# also need a function to pull the team name from the end of the url and use that to be the csv name.
-# ADD FUNSTIONALITY FOR HOME OR AWAY
 
 
 urls = Url.nba_url_list
