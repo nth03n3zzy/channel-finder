@@ -24,10 +24,9 @@ def create_csv(url):
 
 # LIST OF ALL TEAM URLS  TO BE ITERATED THROUGH
 urls = Url.nba_url_list
-url = urls[0]
 
-create_csv('https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2')
+# create_csv('https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2')
 
 # loop creates a csv file for each team and their schedule.
-# for i in range(len(urls)):
-#   create_csv(urls[i])
+for i in range(len(urls)):
+    create_csv(urls[i])

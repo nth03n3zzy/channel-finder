@@ -6,12 +6,9 @@ from bs4 import BeautifulSoup
 import sys
 sys.path.append('/Users/daddy/Desktop/web_scraper_NBA/channel-finder/back-end')
 
-# need to fix get schedule function the same way i fixed the print chedule function in regards to the enumerated for loop
-# and the order of the even erse odd games printing. and add commenting explaining this and how it works.
-# Need to fix the formatting for the channels so it doesnt print in a list.
 # Look into dealing with time conversion, detecting system time and converting the game time to reflect that accordingly
 #   or possibly perhaps just posinting the imes in pst and est.
-# ADD FUNSTIONALITY FOR HOME OR AWAY
+# ADD FUNCTIONALITY FOR HOME OR AWAY
 
 url = "https://www.espn.com/nba/team/schedule/_/name/ny/seasontype/2"
 headers = {
@@ -237,6 +234,7 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
                        'channel': game.channel}
 
     schedule_data.append(data_dictionary)
+
     # and since they gave the last row a different class we also have seperate print commands for that.
     game = Game(find_date(lastrow), find_opponent(lastrow),
                 find_time(lastrow), find_channel(lastrow))
