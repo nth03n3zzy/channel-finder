@@ -1,11 +1,14 @@
-# file for making game objects, and any functions pertaining to formatting the info and data for a game object for display.
-
 class Game:
     def __init__(self, date, opponent, time, channel):
         self.date = date
         self.opponent = opponent
         self.time = time
-        self.channel = channel
+        # Check if channel is a list, and if so, capitalize each element.
+        if isinstance(channel, list):
+            self.channel = [c.upper() for c in channel]
+        else:
+            self.channel = [channel.upper()]
 
     def __str__(self):
-        return f"Date: {self.date}, Opponent: {self.opponent}, Time: {self.time}, Channel: {self.channel}"
+        channel_str = ', '.join(self.channel)
+        return f"Date: {self.date}, Opponent: {self.opponent}, Time: {self.time}, Channel: {channel_str}"
