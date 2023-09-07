@@ -163,8 +163,6 @@ def print_schedule(tag, class_odd_rows, class_even_rows, url):
             evenrows[n]), find_time(evenrows[n]), find_channel(evenrows[n]))
         print(game)
 
-        # if statement is logic to skip first odd row as it is just table header info.
-
     # since we stop printing after min length we need to print the last odd row
     game = Game(find_date(oddrows[40]), find_opponent(
         oddrows[40]), find_time(oddrows[40]), find_channel(oddrows[40]))
@@ -207,57 +205,46 @@ def get_schedule(tag, class_odd_rows, class_even_rows, url):
 
     # for loop alternating between even and odd rows. first odd row is skipped because it jsut contains header information
 
-    for n in range(min_length):
+    for r, n in enumerate(range(min_length), start=1):
 
-        date = find_date(evenrows[n])
-        opponent = find_opponent(evenrows[n])
-        time = find_time(evenrows[n])
-        channel = find_channel(evenrows[n])
+        game = Game(find_date(oddrows[r]), find_opponent(
+            oddrows[r]), find_time(oddrows[r]), find_channel(oddrows[r]))
 
-        data_dictionary = {'date': date,
-                           'opponent': opponent,
-                           'time': time,
-                           'channel': channel}
+        data_dictionary = {'date': game.date,
+                           'opponent': game.opponent,
+                           'time': game.time,
+                           'channel': game.channel}
 
         schedule_data.append(data_dictionary)
 
-        # if statement is logic to skip first odd row as it is just table header info.
-        if(n > 0):
-            date = find_date(oddrows[n])
-            opponent = find_opponent(oddrows[n])
-            time = find_time(oddrows[n])
-            channel = find_channel(oddrows[n])
+        game = Game(find_date(evenrows[n]), find_opponent(
+            evenrows[n]), find_time(evenrows[n]), find_channel(evenrows[n]))
 
-            data_dictionary = {'date': date,
-                               'opponent': opponent,
-                               'time': time,
-                               'channel': channel}
+        data_dictionary = {'date': game.date,
+                           'opponent': game.opponent,
+                           'time': game.time,
+                           'channel': game.channel}
 
-            schedule_data.append(data_dictionary)
+        schedule_data.append(data_dictionary)
 
     # since we stop printing after min length we need to print the last odd row
-    date = find_date(oddrows[40])
-    opponent = find_opponent(oddrows[40])
-    time = find_time(oddrows[40])
-    channel = find_channel(oddrows[40])
+    game = Game(find_date(oddrows[40]), find_opponent(
+        oddrows[40]), find_time(oddrows[40]), find_channel(oddrows[40]))
 
-    data_dictionary = {'date': date,
-                       'opponent': opponent,
-                       'time': time,
-                       'channel': channel}
+    data_dictionary = {'date': game.date,
+                       'opponent': game.opponent,
+                       'time': game.time,
+                       'channel': game.channel}
 
     schedule_data.append(data_dictionary)
-
     # and since they gave the last row a different class we also have seperate print commands for that.
-    date = find_date(lastrow)
-    opponent = find_opponent(lastrow)
-    time = find_time(lastrow)
-    channel = find_channel(lastrow)
+    game = Game(find_date(lastrow), find_opponent(lastrow),
+                find_time(lastrow), find_channel(lastrow))
 
-    data_dictionary = {'date': date,
-                       'opponent': opponent,
-                       'time': time,
-                       'channel': channel}
+    data_dictionary = {'date': game.date,
+                       'opponent': game.opponent,
+                       'time': game.time,
+                       'channel': game.channel}
 
     schedule_data.append(data_dictionary)
 
