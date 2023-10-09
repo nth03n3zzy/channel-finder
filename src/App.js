@@ -3,7 +3,8 @@ import MonthNavigationBar from "./components/MonthNavigationBar.js";
 import TeamNavigationBar from '/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/components/TeamNavigationBar.js';
 import NbaTeamList from "/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/Data/TeamData.js";
 import './App.css'; // Import your CSS file here
-import axios from "axios";
+import axios from "axios";  
+
 
 
 const App = () => {
@@ -13,7 +14,7 @@ const App = () => {
   const handleTeamSelect = (teamAbbreviation) => {
     setSelectedTeam(teamAbbreviation);
 
-    axios.get('http://localhost:8000/nba/schedule/${teamAbbreviation}/')
+    axios.get(`http://localhost:8000/nba/schedule/${teamAbbreviation}/`)
     .then((res) => {
       setTeamData(res.data);
       console.log("Team Data:", res.data);
@@ -31,9 +32,45 @@ const App = () => {
       {/* Display team data based on the selectedTeam and teamData */}
       {selectedTeam && teamData && (
         <div className="team-data">
-          <h2>{selectedTeam} Schedule</h2>
-          {/* Render the team's schedule here */}
-          {/* Example: teamData.map(game => (<div key={game.id}>{game.date} - {game.opponent}</div>)) */}
+          <h2> Schedule</h2>
+              <section className="team-schedule-section">
+                <table className="team_schedule_table">
+                  <thead>
+                    <tr className="table-column-names">
+                      <th className="date-header">
+                        <span className="date-span">DATE</span>
+                      </th>
+                      <th className="opponent-header">
+                        <span>OPPONENT</span>
+                      </th>
+                      <th className="time-header">
+                        <span>TIME</span>
+                      </th>
+                      <th className="channel-header">
+                        <span>CHANNEL</span>
+                      </th>
+                    </tr>
+                    </thead>
+                  <tbody className="team-schedule-table-body">
+                    {teamData.map((game, index) => (
+                    <tr key = {index} className="game-data">
+                      <td className="date">
+                        <span>{game.date}</span>
+                      </td>
+                      <td className="opponnent">
+                        <span>{game.opponent}</span>
+                      </td>
+                      <td className="time">
+                        <span>{game.time} EST </span>
+                      </td>
+                      <td className="channel">
+                      <span>{game.channel.replace(/[\[\]']+/g, '')}</span>
+                      </td>
+                    </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
         </div>
       )}
     </div>
