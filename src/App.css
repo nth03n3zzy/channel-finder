@@ -1,38 +1,56 @@
-.App {
-  text-align: center;
+
+.team-data {
+  scroll-behavior: smooth;
+  text-align: center; /* Use text-align to center content */
+  margin: 50px;
+  padding: 10px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+h2{
+  position:relative;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.team_schedule_table{
+  border-collapse: collapse;
+  width: 100%;
+  position: relative;
+  border-spacing: 0;
+  padding: 10px;
+  margin: 10px;
+  border-bottom: 1px solid #6c6d6f;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.table-column-names{
+  padding: 10px;
+  margin: 5px;
+  border-bottom: 1px solid #6c6d6f;
+  border: 1px solid #6c6d6f;
 }
-
-.App-link {
-  color: #61dafb;
+.date-header{
+  border: 1px solid #6c6d6f;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.opponent-header{
+  border: 1px solid #6c6d6f;
+}
+.time-header{
+  border: 1px solid #6c6d6f;
+}
+.channel-header{
+  border: 1px solid #6c6d6f;
+}
+.game-data{
+  border: 1px solid #6c6d6f;
+}
+.date{
+  border: 1px solid #6c6d6f;
+}
+.time{
+  border: 1px solid #6c6d6f;
+}
+.opponent{
+  border: 1px solid #6c6d6f;
+}
+.channel{
+  border: 1px solid #6c6d6f;
 }
