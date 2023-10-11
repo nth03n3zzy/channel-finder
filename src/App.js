@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import MonthNavigationBar from "./components/MonthNavigationBar.js";
 import TeamNavigationBar from '/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/components/TeamNavigationBar.js';
 import NbaTeamList from "/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/Data/TeamData.js";
@@ -10,6 +10,7 @@ import axios from "axios";
 const App = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [teamData, setTeamData] = useState(null);
+  const [userTimeZoneOffset, setUserTimeZoneOffset] = useState(0); // initialize with 0
 
   const handleTeamSelect = (teamAbbreviation) => {
     setSelectedTeam(teamAbbreviation);
@@ -61,7 +62,7 @@ const App = () => {
                         <span>{game.opponent}</span>
                       </td>
                       <td className="time">
-                        <span>{game.time} EST </span>
+                        <span>{game.time}</span>
                       </td>
                       <td className="channel">
                       <span>{game.channel.replace(/[\[\]']+/g, '')}</span>
