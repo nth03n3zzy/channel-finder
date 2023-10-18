@@ -33,7 +33,6 @@ const App = () => {
   const convertToLocalTime = (utcTime) => {
     const utcDate = new Date(utcTime);
     const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
-    return localDate.toLocaleString();
 
     const localDateStr = localDate.toLocaleDateString(undefined, {
       weekday: 'short',
@@ -47,7 +46,26 @@ const App = () => {
       hour12: true,
     });
 
-    return `${localDateStr}, ${localTimeStr}`;
+    return `${localTimeStr}`;
+  };
+
+  const convertToLocalDate = (utcTime) => {
+    const utcDate = new Date(utcTime);
+    const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
+
+    const localDateStr = localDate.toLocaleDateString(undefined, {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
+
+    const localTimeStr = localDate.toLocaleTimeString(undefined, {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+
+    return `${localDateStr}`;
   };
   return (
     <div className='app-container'>
@@ -80,12 +98,7 @@ const App = () => {
                     {teamData.map((game, index) => (
                     <tr key = {index} className="game-data">
                       <td className="date">
-                      <span>{new Date(game.date).toLocaleString(undefined, {
-                            weekday: 'short',
-                            month: 'short',
-                            day: 'numeric',
-                             })}
-                            </span>
+                      <span>{convertToLocalDate(game.time)}</span>
                       </td>
                       <td className="opponnent">
                         <span>{game.opponent}</span>
