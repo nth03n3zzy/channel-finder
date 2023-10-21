@@ -93,7 +93,7 @@ const App = () => {
                       <td className="date">
                       <span>{convertToLocalDate(game.time)}</span>
                       </td>
-                      <td className="opponnent">
+                      <td className="opponent">
                         <span>{game.opponent}</span>
                       </td>
                       <td className="time">
