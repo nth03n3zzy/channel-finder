@@ -11,6 +11,8 @@ const App = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [teamData, setTeamData] = useState(null);
   const [userTimeZoneOffset, setUserTimeZoneOffset] = useState(0); // initialize with 0
+  const [currentDate] = useState(new Date()); // getting the current date to compare and not show games that have transpired
+  const [selectedTeamSchedule, setSelectedTeamSchedule] = useState ([]); // array to hold schedule to help filtering out expired games
 
   const handleTeamSelect = (teamAbbreviation) => {
     setSelectedTeam(teamAbbreviation);
@@ -18,6 +20,7 @@ const App = () => {
     axios.get(`http://localhost:8000/nba/schedule/${teamAbbreviation}/`)
     .then((res) => {
       setTeamData(res.data);
+      setSelectedTeamSchedule(res.data); // set the selected teams schedule 
       console.log("Team Data:", res.data);
     })
     .catch((err) => {
@@ -31,7 +34,7 @@ const App = () => {
 
   // function to convert UTC from the users local time.
   
-  const convertToLocalTime = (utcTime) => {
+  const convertToLocalTimeString = (utcTime) => {
     const utcDate = new Date(utcTime);
     const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
 
@@ -44,8 +47,13 @@ const App = () => {
 
     return `${localTimeStr}`;
   };
+  const convertToLocalTime = (utcTime) => {
+    const utcDate = new Date(utcTime);
+    const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
+     return localDate
+  }
   // uses the game time converts the time to the local users time and converts the games date is different due to time change 
-  const convertToLocalDate = (utcTime) => {
+  const convertToLocalDateString = (utcTime) => {
     const utcDate = new Date(utcTime);
     const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
 
@@ -90,16 +98,30 @@ const App = () => {
                     </tr>
                     </thead>
                   <tbody className="team-schedule-table-body">
-                    {teamData.map((game, index) => (
+                      {selectedTeamSchedule.filter((game) => {
+                        const gameDate = new Date(game.time);
+                        const gameDateLocal = convertToLocalTime(gameDate);
+                        const bufferTime = 4 * 60 * 60 * 1000 // allow buffertime for games currently occuring
+                        const currentDate = new Date();
+
+                        const isUpcomingGame = gameDateLocal >= currentDate- bufferTime 
+                        //return gameDate >= currentDate - bufferTime // only showing upcoming games 
+
+                        if(!isUpcomingGame){
+                          console.log(`Game date: ${gameDate} is not upcoming.`);
+                        }
+                       return isUpcomingGame
+                    })
+                     .map((game, index) => (
                     <tr key = {index} className="game-data">
                       <td className="date">
-                      <span>{convertToLocalDate(game.time)}</span>
+                      <span>{convertToLocalDateString(game.time)}</span>
                       </td>
                       <td className="opponent">
                         <span>{game.opponent}</span>
                       </td>
                       <td className="time">
-                        <span>{convertToLocalTime(game.time)}</span>
+                        <span>{convertToLocalTimeString(game.time)}</span>
                       </td>
                       <td className="channel">
                       <span>{game.channel.replace(/[\[\]']+/g, '')}</span>
