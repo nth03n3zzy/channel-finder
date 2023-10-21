@@ -39,6 +39,7 @@ const App = () => {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Set the user's timezone
     });
 
     return `${localTimeStr}`;
@@ -52,6 +53,7 @@ const App = () => {
       weekday: 'short',
       month: 'short',
       day: 'numeric',
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Set the user's timezone
     });
 
     return `${localDateStr}`;
