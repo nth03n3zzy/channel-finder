@@ -1,4 +1,18 @@
-
+.next-game-row{
+  display: flex;
+  align-items: center;
+}
+.next-game-cell {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+}
+.next-game-row-game-info{
+  display: flex;
+  align-items: center;
+}
 .team-data {
   scroll-behavior: smooth;
   text-align: center; /* Use text-align to center content */
