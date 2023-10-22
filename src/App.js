@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import MonthNavigationBar from "./components/MonthNavigationBar.js";
+import SportNavigationBar from "./components/SportNavigationBar.js";
 import TeamNavigationBar from '/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/components/TeamNavigationBar.js';
 import NbaTeamList from "/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/Data/TeamData.js";
 import './App.css'; 
@@ -80,11 +80,11 @@ const App = () => {
     <div className='app-container'>
       <h1 id='header' className='choose-team-header'>Choose a team</h1>
       <TeamNavigationBar teams={NbaTeamList} onTeamClick={handleTeamSelect} />
-      <MonthNavigationBar />
+      <SportNavigationBar />
       {/* Display team data based on the selectedTeam and teamData */}
       {selectedTeam && teamData && (
         <div className="team-data">
-          <h2 className="next-game-header">Next Game</h2>
+         <h2 className="next-game-header">{NbaTeamList.find(team => team.abbreviation === selectedTeam)?.name} Next Game</h2>
           <section className="next-game-section">
             <div className="next-game-row">
               <div className="next-game-cell next-game-date-header">
@@ -123,7 +123,7 @@ const App = () => {
         occuring within the season in a block below that block. */}
       {selectedTeam && teamData && (
         <div className="team-data">
-          <h2> Schedule</h2>
+          <h2>{NbaTeamList.find(team => team.abbreviation === selectedTeam)?.name} Next Game</h2>
           <section className="team-schedule-section">
             <table className="team_schedule_table">
               <thead>
@@ -188,6 +188,4 @@ const App = () => {
     </div>
   );
 };
-
-
 export default App;
