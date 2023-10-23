@@ -21,8 +21,10 @@
     white-space: nowrap;
     color: #1d428a;
     transition: color 0.3s;
+    text-decoration: none;
 }
 .sport-link:hover{
     color: #fff;
+    text-decoration: none;
     font-size: 25px;
 }

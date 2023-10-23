@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import SportNavigationBar from "./components/SportNavigationBar.js";
-import TeamNavigationBar from '/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/components/TeamNavigationBar.js';
-import NbaTeamList from "/Users/daddy/Desktop/web_scraper_NBA/channel-finder/src/Data/TeamData.js";
+import TeamNavigationBar from './components/TeamNavigationBar.js';
+import {NbaTeamList, NflTeamList, NhlTeamList, MlbTeamList} from "./Data/TeamData.js";
 import './App.css'; 
 import axios from "axios";  
 
@@ -12,14 +12,32 @@ const App = () => {
   const [teamData, setTeamData] = useState(null);
   const [userTimeZoneOffset, setUserTimeZoneOffset] = useState(0); // initialize with 0
   const [selectedTeamSchedule, setSelectedTeamSchedule] = useState ([]); // array to hold schedule to help filtering out expired games
+  const [selectedSport, setSelectedSport] = useState("NBA") // team navigation bar initialize with NBA
 
+  //switch case for when different sports are selected
+  function getTeamList(selectedSport) {
+    switch (selectedSport) {
+      case "NBA":
+        return NbaTeamList;
+      case "NFL":
+        return NflTeamList;
+      case "NHL":
+        return NhlTeamList;
+      case "MLB":
+        return MlbTeamList;
+      default:
+        return [];
+    }
+  }
+   
+  //when a team is selected
   const handleTeamSelect = (teamAbbreviation) => {
     setSelectedTeam(teamAbbreviation);
-
+    // team abbreviation is passed to back end >>>>>>>need to add sport for common abbreviations across sports<<<<<<<<<<<<<<<,
     axios.get(`http://localhost:8000/nba/schedule/${teamAbbreviation}/`)
     .then((res) => {
       setTeamData(res.data);
-
+      // logic to determin what games are upcoming and what games have already occured with a four hour buffer
       const  currentDate = new Date();
       
       const upcomingGames = res.data.filter((game) => {
@@ -57,6 +75,10 @@ const App = () => {
 
     return `${localTimeStr}`;
   };
+  const handleSportSelect = (sport) => {
+    setSelectedSport(sport);
+    setSelectedTeam(null); // Clear the selected team when switching sports
+  };
   const convertToLocalTime = (utcTime) => {
     const utcDate = new Date(utcTime);
     const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
@@ -78,9 +100,10 @@ const App = () => {
   };
   return (
     <div className='app-container'>
-      <h1 id='header' className='choose-team-header'>Choose a team</h1>
-      <TeamNavigationBar teams={NbaTeamList} onTeamClick={handleTeamSelect} />
-      <SportNavigationBar />
+      <h1 id='header' className='choose-team-header'>Choose a Sport and a team.</h1>
+      <h3>The data used to determine the channel does not account for blackouts, and local networks.</h3>
+      <TeamNavigationBar teams={getTeamList(selectedSport)} onTeamClick={handleTeamSelect} />
+      <SportNavigationBar selectedSport={selectedSport} onSportSelect = {handleSportSelect} />
       {/* Display team data based on the selectedTeam and teamData */}
       {selectedTeam && teamData && (
         <div className="team-data">
@@ -123,7 +146,7 @@ const App = () => {
         occuring within the season in a block below that block. */}
       {selectedTeam && teamData && (
         <div className="team-data">
-          <h2>{NbaTeamList.find(team => team.abbreviation === selectedTeam)?.name} Next Game</h2>
+          <h2>{NbaTeamList.find(team => team.abbreviation === selectedTeam)?.name} upcoming Games.</h2>
           <section className="team-schedule-section">
             <table className="team_schedule_table">
               <thead>
