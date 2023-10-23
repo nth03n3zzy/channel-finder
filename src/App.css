@@ -1,3 +1,4 @@
+
 .next-game-row{
   display: flex;
   align-items: center;
@@ -6,12 +7,49 @@
   flex: 1;
   text-align: center;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.next-game-date-header {
+  border-left: 1px solid #CCC;
+  border-top-left-radius: 15px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+.next-game-opponent-header {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+.next-game-time-header {
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+.next-game-channel-header {
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+  border-top-right-radius: 15px;
+}
+.next-game-date {
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-bottom-left-radius: 15px;
+}
+.next-game-opponent {
+  border-bottom: 1px solid #ccc;
+}
+.next-game-time {
+  border-bottom: 1px solid #ccc;
+}
+.next-game-channel {
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-bottom-right-radius: 15px;
 }
 .next-game-row-game-info{
   display: flex;
   align-items: center;
+  font-size: 20px;
 }
 .team-data {
   scroll-behavior: smooth;
