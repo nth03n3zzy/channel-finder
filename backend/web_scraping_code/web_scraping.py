@@ -461,8 +461,6 @@ def get_schedule_nfl(tag, class_odd_rows, class_even_rows, url):
 
     min_length = min(len(oddrows), len(evenrows))
 
-    print(min_length)
-
     for r, n in enumerate(range(min_length), start=1):
 
         game = Game(get_team_name_nhl(url), find_date_nfl(oddrows[r]), find_opponent(
@@ -592,8 +590,8 @@ def get_schedule_nhl(tag, class_odd_rows, class_even_rows, url):
 
 urls = Url.nba_url_list
 
-print(get_schedule_nfl('tr', 'Table__TR Table__TR--sm Table__even',
-                       'filled Table__TR Table__TR--sm Table__even', url))
+# print(get_schedule_nfl('tr', 'Table__TR Table__TR--sm Table__even',
+#                       'filled Table__TR Table__TR--sm Table__even', url))
 
 # print(find_date_nfl(evenRows))
 # print(find_opponent(evenRows))
