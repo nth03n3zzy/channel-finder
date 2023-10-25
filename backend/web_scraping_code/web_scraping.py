@@ -10,7 +10,7 @@ sys.path.append('/Users/daddy/Desktop/web_scraper_NBA/channel-finder/back-end')
 
 # ADD FUNCTIONALITY FOR HOME OR AWAY
 # tester url not used when csvs are actually created urls are used from url_list.py
-url = "https://www.espn.com/nfl/team/schedule/_/name/buf/buffalo-bills"
+url = "https://www.espn.com/nfl/team/schedule/_/name/bal/baltimore-ravens"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
 
@@ -163,11 +163,12 @@ def find_time_nfl(row, scraped_date):
     time_element = row.find_all('td', class_='Table__TD')[3]
     time_est = time_element.text.strip()
 
+    if time_est == 'TBD':
+        return 'TBD'
+
     time_parts = time_est.split()
     if len(time_parts) != 2 or not time_parts[0].count(':') == 1 and time_parts != 'TBD':
         return 'invalid time'
-    if time_parts == 'TBD':
-        return 'TBD'
 
     # Include the day of the month in the date string
     date_str = scraped_date + f' {datetime.now().year}'
@@ -454,6 +455,8 @@ def get_schedule_nfl(tag, class_odd_rows, class_even_rows, url):
             tag, 'bb--none Table__TR Table__TR--sm Table__even')[1]
 
     except Exception:
+        length = len(doc.find_all(
+            tag, 'filled bb--none Table__TR Table__TR--sm Table__even'))
         lastrow = doc.find_all(
             tag, 'filled bb--none Table__TR Table__TR--sm Table__even')[1]
 
@@ -496,8 +499,8 @@ def get_schedule_nfl(tag, class_odd_rows, class_even_rows, url):
 
     schedule_data.append(data_dictionary)
 
-    game = Game(get_team_name_nhl(url), find_date(lastrow), find_opponent(
-        lastrow), find_time(lastrow, find_date(lastrow)), find_channel_nfl(lastrow))
+    game = Game(get_team_name_nhl(url), find_date_nfl(lastrow), find_opponent(
+        lastrow), find_time_nfl(lastrow, find_date_nfl(lastrow)), find_channel_nfl(lastrow))
 
     data_dictionary = {'team': game.team,
                        'date': game.date,
