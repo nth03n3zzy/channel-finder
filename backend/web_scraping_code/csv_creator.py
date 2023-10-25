@@ -1,7 +1,8 @@
 import web_scraping
 from url_list import Url
 import csv
-
+import time
+import requests
 # this one is for NBA  and refractoring in VS code sucks or i am dumb so it isnt tagged as such
 
 
@@ -67,9 +68,9 @@ urls_nba = Url.nba_url_list
 urls_nhl = Url.nhl_url_list
 urls_nfl = Url.nfl_url_list
 
-# create_csv_nhl(
-#   'https://www.espn.com/nhl/team/schedule/_/name/bos/boston-bruins')
-
 # loop creates a csv file for each team and their schedule.
 for i in range(len(urls_nfl)):
-    create_csv_nfl(urls_nfl[i])
+    try:
+        create_csv_nfl(urls_nfl[i])
+    except Exception as e:
+        print(f"Error while processing {urls_nfl[i]}: {str(e)}")

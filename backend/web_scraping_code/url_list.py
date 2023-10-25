@@ -58,9 +58,10 @@ class Url:
         'https://www.espn.com/nfl/team/schedule/_/name/den/denver-broncos',
         'https://www.espn.com/nfl/team/schedule/_/name/kc/kansas-city-chiefs',
         'https://www.espn.com/nfl/team/schedule/_/name/lv/las-vegas-raiders',
-        'https://www.espn.com/nfl/team/schedule/_/name/lac/los-angeles-chargers'
+        'https://www.espn.com/nfl/team/schedule/_/name/lac/los-angeles-chargers',
         # NFC east division
         'https://www.espn.com/nfl/team/schedule/_/name/dal/dallas-cowboys',
+        # 'https://www.espn.com/nfl/team/schedule/_/name/dal/dallas-cowboys',
         'https://www.espn.com/nfl/team/schedule/_/name/nyg/new-york-giants',
         'https://www.espn.com/nfl/team/schedule/_/name/phi/philadelphia-eagles',
         'https://www.espn.com/nfl/team/schedule/_/name/wsh/washington-commanders',
