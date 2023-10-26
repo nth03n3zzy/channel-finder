@@ -28,3 +28,40 @@
     text-decoration: none;
     font-size: 25px;
 }
+@media screen and (max-width: 768px) {
+    .sport-navigation-bar {
+        display: flex;
+        width: 100%;
+        overflow-x: auto;
+        padding: 10px;
+        scroll-behavior: smooth;
+        background-color: #c9082a;
+        flex-wrap: wrap; /* Allow items to wrap to the next line on smaller screens */
+        justify-content: center; /* Center the items horizontally */
+        height: auto; /* Adjust the height to fit content */
+      }
+      
+      .sport-link {
+        margin: 10px;
+        display: flex;
+        cursor: pointer;
+        font-weight: 600;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px; /* Adjust padding for smaller screens */
+        font-size: 16px; /* Reduce font size for smaller screens */
+        white-space: nowrap;
+        color: #1d428a;
+        transition: color 0.3s;
+        text-decoration: none;
+        text-align: center; /* Center text within the link */
+      }
+      
+      .sport-link:hover {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px; /* Increase font size on hover */
+      }
+      
+}

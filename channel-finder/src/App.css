@@ -1,4 +1,9 @@
-
+.choose-team-header{
+  width: auto;
+}
+.instructions{
+  width: auto;
+}
 .next-game-row{
   display: flex;
   align-items: center;
@@ -106,3 +111,41 @@ h2{
 .channel{
   border: 1px solid #6c6d6f;
 }
+
+/* Media query for small screens */
+@media screen and (max-width: 768px) {
+  .next-game-cell {
+    font-size: 16px;
+  }
+  .next-game-header {
+    font-size: 18px;
+  }
+  .next-game-row, .next-game-row-game-info {
+    display: inline-block;
+    border: 1px solid #ccc;
+  }
+  .next-game-row {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+  }
+  .next-game-row-game-info {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+  }
+
+  .next-game-cell {
+    text-align: left; /* Adjust text alignment for smaller screens */
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+  }
+  .next-game-channel-header, 
+  .next-game-channel{
+    border: none;
+  }
+  
+
+
+
+}
+
