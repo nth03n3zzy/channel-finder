@@ -10,7 +10,7 @@ sys.path.append('/Users/daddy/Desktop/web_scraper_NBA/channel-finder/back-end')
 
 # ADD FUNCTIONALITY FOR HOME OR AWAY
 # tester url not used when csvs are actually created urls are used from url_list.py
-url = "https://www.espn.com/nfl/team/schedule/_/name/bal/baltimore-ravens"
+url = "https://www.espn.com/nfl/team/schedule/_/name/ari/arizona-cardinals"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
 
@@ -19,10 +19,10 @@ page = requests.get(url, headers=headers)
 doc = BeautifulSoup(page.text, "html.parser")
 
 # Find all rows with class "Table__TR--sm" row 0 is the heading for the table so it will need to be skipped.
-oddRows = doc.find_all('tr', class_='Table__TR Table__TR--sm Table__even')[10]
+oddRows = doc.find_all('tr', class_='Table__TR Table__TR--sm Table__even')[2]
 
 evenRows = doc.find_all(
-    'tr', class_='filled Table__TR Table__TR--sm Table__even')[7]
+    'tr', class_='filled Table__TR Table__TR--sm Table__even')[5]
 
 # function to find the date contained in the row that is being inputted.
 
@@ -469,6 +469,9 @@ def get_schedule_nfl(tag, class_odd_rows, class_even_rows, url):
         game = Game(get_team_name_nhl(url), find_date_nfl(oddrows[r]), find_opponent(
             oddrows[r]), find_time_nfl(oddrows[r], find_date_nfl(oddrows[r])), find_channel_nfl(oddrows[r]))
 
+        if game.date == 'DATE':
+            continue
+
         data_dictionary = {'team': game.team,
                            'date': game.date,
                            'opponent': game.opponent,
@@ -479,6 +482,9 @@ def get_schedule_nfl(tag, class_odd_rows, class_even_rows, url):
 
         game = Game(get_team_name_nhl(url), find_date_nfl(evenrows[n]), find_opponent(
             evenrows[n]), find_time_nfl(evenrows[n], find_date_nfl(evenrows[n])), find_channel_nfl(evenrows[n]))
+
+        if game.date == 'DATE':
+            continue
 
         data_dictionary = {'team': game.team,
                            'date': game.date,
@@ -593,10 +599,10 @@ def get_schedule_nhl(tag, class_odd_rows, class_even_rows, url):
 
 urls = Url.nba_url_list
 
-# print(get_schedule_nfl('tr', 'Table__TR Table__TR--sm Table__even',
-#                       'filled Table__TR Table__TR--sm Table__even', url))
+print(get_schedule_nfl('tr', 'Table__TR Table__TR--sm Table__even',
+                       'filled Table__TR Table__TR--sm Table__even', url))
 
-# print(find_date_nfl(evenRows))
-# print(find_opponent(evenRows))
+# print(find_date_nfl(oddRows))
+# print(find_opponent(oddRows))
 #print(find_time_nfl(evenRows, find_date_nfl(evenRows)))
 # print(find_channel_nfl(evenRows))
