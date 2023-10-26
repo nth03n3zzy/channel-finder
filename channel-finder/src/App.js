@@ -106,7 +106,7 @@ const App = () => {
   return (
     <div className='app-container'>
       <h1 id='header' className='choose-team-header'>Choose a Sport and a team.</h1>
-      <h3>The data used to determine the channel does not account for blackouts, and local networks.</h3>
+      <h3 className="instructions">The data used to determine the channel does not account for blackouts, and local networks.</h3>
       <TeamNavigationBar teams={getTeamList(selectedSport)} onTeamClick={handleTeamSelect} />
       <SportNavigationBar selectedSport={selectedSport} onSportSelect = {handleSportSelect} />
       {/* Display team data based on the selectedTeam and teamData */}
