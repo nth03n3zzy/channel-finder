@@ -34,7 +34,7 @@ const App = () => {
   const handleTeamSelect = (teamAbbreviation) => {
     setSelectedTeam(teamAbbreviation);
     // team abbreviation is passed to back end >>>>>>>need to add sport for common abbreviations across sports<<<<<<<<<<<<<<<,
-    axios.get(`http://localhost:8000/nba/schedule/${teamAbbreviation}/`)
+    axios.get(`http://localhost:8000/${selectedSport}/schedule/${teamAbbreviation}/`)
     .then((res) => {
       setTeamData(res.data);
       // logic to determin what games are upcoming and what games have already occured with a four hour buffer
@@ -98,6 +98,11 @@ const App = () => {
 
     return `${localDateStr}`;
   };
+  const findTeamName = (selectedSport) => {
+    const selectedSportFormatted = selectedSport.charAt(0).toUpperCase() + selectedSport.slice(1).toLowerCase();
+    return selectedSportFormatted
+  }
+  selectedTeamSchedule.sort((a, b) => new Date(a.time) - new Date(b.time));
   return (
     <div className='app-container'>
       <h1 id='header' className='choose-team-header'>Choose a Sport and a team.</h1>
@@ -109,48 +114,13 @@ const App = () => {
       {/* Need to add seperation for filtering out past games that have already occured,
        placing the next upcoming game in a large block and then the rest of the games
         occuring within the season in a block below that block. */}
-      {selectedTeam && teamData && (
-        <div className="team-data">
-          <h2 className="next-game-header">Next Game</h2>
-          <section className="next-game-section">
-            <div className="next-game-row">
-              <div className="next-game-cell next-game-date-header">
-                <span>Date</span>
-              </div>
-              <div className="next-game-cell next-game-opponent-header">
-                <span>Opponent</span>
-              </div>
-              <div className="next-game-cell next-game-time-header">
-                <span>Time</span>
-              </div>
-              <div className="next-game-cell next-game-channel-header">
-                <span>Channel</span>
-              </div>
-            </div>
-            {selectedTeamSchedule.length > 0 &&
-            <div className="next-game-row-game-info">
-              <div className="next-game-cell next-game-date">
-                <span>{convertToLocalDateString(selectedTeamSchedule[0].time)}</span>
-              </div>
-              <div className="next-game-cell next-game-opponent">
-                <span>{selectedTeamSchedule[0].opponent}</span>
-              </div>
-              <div className="next-game-cell next-game-time">
-                <span>{convertToLocalTimeString(selectedTeamSchedule[0].time)}</span>
-              </div>
-              <div className="next-game-cell next-game-channel">
-                <span>{selectedTeamSchedule[0].channel.replace(/[\[\]']+/g, '')}</span>
-              </div>
-            </div>
-            }
-          </section>
-        </div>
-      )}
       {/* Need to add placing the next upcoming game in a large block and then the rest of the games
         occuring within the season in a block below that block. */}
       {selectedTeam && teamData && (
         <div className="team-data">
-         <h2 className="next-game-header">{NbaTeamList.find(team => team.abbreviation === selectedTeam)?.name} Next Game</h2>
+          <h2 className="next-game-header">
+            {` ${getTeamList(selectedSport).find(team => team.abbreviation === selectedTeam)?.name} Next Game`}
+          </h2>
           <section className="next-game-section">
             <div className="next-game-row">
               <div className="next-game-cell next-game-date-header">

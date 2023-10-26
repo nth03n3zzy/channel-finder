@@ -7,7 +7,7 @@ from .searlizer import ReactSerializer
 # Create your views here.
 
 
-class TeamScheduleView(APIView):
+class NBATeamScheduleView(APIView):
     serializer_class = ReactSerializer
 
     def get(self, request, team_name):

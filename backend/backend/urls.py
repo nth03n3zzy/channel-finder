@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
 from NBA.views import *
+from NFL.views import *
+from NHL.views import *
 """
 URL configuration for backend project.
 
@@ -20,6 +22,10 @@ Including another URLconf
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("nba/schedule/<str:team_name>/",
-         TeamScheduleView.as_view(), name="team-schedule"),
+    path("NBA/schedule/<str:team_name>/",
+         NBATeamScheduleView.as_view(), name="team-schedule"),
+    path("NFL/schedule/<str:team_name>/",
+         NFLTeamScheduleView.as_view(), name="team-schedule"),
+    path("NHL/schedule/<str:team_name>/",
+         NHLTeamScheduleView.as_view(), name="team-schedule")
 ]
