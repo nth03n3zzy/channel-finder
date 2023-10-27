@@ -111,11 +111,7 @@ const App = () => {
       <SportNavigationBar selectedSport={selectedSport} onSportSelect = {handleSportSelect} />
       {/* Display team data based on the selectedTeam and teamData */}
 
-      {/* Need to add seperation for filtering out past games that have already occured,
-       placing the next upcoming game in a large block and then the rest of the games
-        occuring within the season in a block below that block. */}
-      {/* Need to add placing the next upcoming game in a large block and then the rest of the games
-        occuring within the season in a block below that block. */}
+      {/* block to show the next/current game.*/}
       {selectedTeam && teamData && (
         <div className="team-data">
           <h2 className="next-game-header">
@@ -155,8 +151,7 @@ const App = () => {
           </section>
         </div>
       )}
-      {/* Need to add placing the next upcoming game in a large block and then the rest of the games
-        occuring within the season in a block below that block. */}
+      {/* rest of team schedule displayed below */}
       {selectedTeam && teamData && (
         <div className="team-data">
           <h2>{NbaTeamList.find(team => team.abbreviation === selectedTeam)?.name} upcoming Games.</h2>
@@ -179,23 +174,6 @@ const App = () => {
                 </tr>
               </thead>
               <tbody className="team-schedule-table-body">
-                {/* Render the "Next Game" block  probably stik this above the headers in a seperate blovk/ table ^^^^^*/}
-                {/*selectedTeamSchedule.length > 0 && (
-                  <tr key="next-game" className="game-data">
-                    <td className="date">
-                      <span>Next Game:</span>
-                    </td>
-                    <td className="opponent">
-                      <span>{selectedTeamSchedule[0].opponent}</span>
-                    </td>
-                    <td className="time">
-                      <span>{convertToLocalTimeString(selectedTeamSchedule[0].time)}</span>
-                    </td>
-                    <td className="channel">
-                      <span>{selectedTeamSchedule[0].channel.replace(/[\[\]']+/g, '')}</span>
-                    </td>
-                  </tr>
-                )}/*
 
                 {/* Render the upcoming games in the table below */}
                 {selectedTeamSchedule
