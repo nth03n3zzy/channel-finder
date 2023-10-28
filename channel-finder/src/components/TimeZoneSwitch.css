@@ -1,0 +1,68 @@
+.time-zone-switch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    padding: 10px;
+  }
+  
+  label {
+    font-size: 16px;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  
+  input[type="checkbox"] {
+    transform: scale(1.5); /* Increase the size of the checkbox */
+    padding: 5px;
+  }
+  
+  .time-zone-menu {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    align-items: center;
+  }
+  
+  select {
+    font-size: 14px;
+    margin: 5px 0;
+    padding: 5px;
+  }
+  
+  .time-god-fields {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    align-items: center;
+  }
+  .date-field {
+    padding: 5px;
+  }
+
+  .time-field {
+    padding:5px;
+  }
+  
+  input[type="date"],
+  input[type="time"],
+  select {
+    font-size: 14px;
+    margin: 5px 0;
+    padding: 5px;
+  }
+  
+  button {
+    background-color: #007BFF;
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
