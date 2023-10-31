@@ -102,7 +102,7 @@
       const utcDate = new Date(utcTime);
       let timeZone;
 
-      if (selectedTimeZone == null || timeZoneSwitchOn == false) {
+      if (selectedTimeZone == null) {
         timeZone = userTimeZoneOffset;
       } else {
         timeZone = selectedTimeZone;
