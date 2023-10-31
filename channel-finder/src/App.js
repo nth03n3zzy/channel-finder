@@ -14,8 +14,8 @@
     const [userTimeZoneOffset, setUserTimeZoneOffset] = useState(0); // initialize with 0
     const [selectedTeamSchedule, setSelectedTeamSchedule] = useState ([]); // array to hold schedule to help filtering out expired games
     const [selectedSport, setSelectedSport] = useState("NBA") // team navigation bar initialize with NBA
-    const [useLocationTime, setUseLocationTime] = useState(false);
-
+    const [selectedTime, setSelectedTime] = useState(null); // Define selectedTime
+    const [selectedTimeZone, setSelectedTimeZone] = useState(null);
     //switch case for when different sports are selected
     function getTeamList(selectedSport) {
       switch (selectedSport) {
@@ -43,8 +43,14 @@
         const  currentDate = new Date();
         
         const upcomingGames = res.data.filter((game) => {
-          const gameDate = new Date(game.time);
-          const gameDateLocal = new Date(gameDate.getTime() - userTimeZoneOffset * 60000);
+
+          const originalTime = game.time;
+
+          const iso8601Time = originalTime.replace(" ", "T") + "Z";
+  
+          const gameDate = new Date(iso8601Time);
+        
+          const gameDateLocal = new Date(gameDate.getTime() + userTimeZoneOffset * 60000);
           const bufferTime = 4 * 60 * 60 * 1000;
 
           return gameDateLocal >= currentDate - bufferTime;
@@ -59,15 +65,24 @@
     };
     // get the users time zone offset once the component is mounted.
     useEffect(() => {
-      setUserTimeZoneOffset(new Date().getTimezoneOffset());
+      setUserTimeZoneOffset(new Date().getTimezoneOffset() * -1);
     }, []);
 
     // function to convert UTC from the users local time.
     
-    const convertToLocalTimeString = (utcTime) => {
+    const convertToLocalTimeString = (utcTime, selectedTimeZone) => {
       const utcDate = new Date(utcTime);
+      let timeZone;
+
+      if (selectedTimeZone == null) {
+        timeZone = userTimeZoneOffset;
+      } else {
+        timeZone = selectedTimeZone;
+      }
+
       //if (TimeZoneSwitch)
-      const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
+      const localDate = new Date(utcDate.getTime() + timeZone * 60000);
+      
 
       const localTimeStr = localDate.toLocaleTimeString(undefined, {
         hour: 'numeric',
@@ -83,9 +98,18 @@
       setSelectedTeam(null); // Clear the selected team when switching sports
     };
     // uses the game time converts the time to the local users time and converts the games date is different due to time change 
-    const convertToLocalDateString = (utcTime) => {
+    const convertToLocalDateString = (utcTime, selectedTimeZone) => {
       const utcDate = new Date(utcTime);
-      const localDate = new Date(utcDate.getTime() - userTimeZoneOffset * 60000);
+      let timeZone;
+
+      if (selectedTimeZone == null || timeZoneSwitchOn == false) {
+        timeZone = userTimeZoneOffset;
+      } else {
+        timeZone = selectedTimeZone;
+      }
+      //if (TimeZoneSwitch)
+      const localDate = new Date(utcDate.getTime() + timeZone * 60000);
+
 
       const localDateStr = localDate.toLocaleDateString(undefined, {
         weekday: 'short',
@@ -100,12 +124,112 @@
       const selectedSportFormatted = selectedSport.charAt(0).toUpperCase() + selectedSport.slice(1).toLowerCase();
       return selectedSportFormatted
     }
+    /*
     const handleTimeZoneChange = (selectedTime) => {
       // Handle the selected time here
       console.log("Selected Time:", selectedTime);
+
     
-      // You can update your component's state or perform any other action as needed
+      if (selectedSport && selectedTeam) {
+        console.log(selectedTeam + selectedSport)
+        axios.get(`http://localhost:8000/${selectedSport}/schedule/${selectedTeam}/`)
+          .then((res) => {
+            setTeamData(res.data);
+
+            const timeZoneParts = selectedTime.selectedTimeZone.split(":");
+            const timeZoneOffset = parseInt(timeZoneParts[0]) * 60 + parseInt(timeZoneParts[1]);
+            console.log("time Zone Offset " + timeZoneOffset);  
+        
+            
+            const upcomingGames = res.data.filter((game) => {
+            
+              const originalTime = game.time;
+
+              const iso8601Time = originalTime.replace(" ", "T") + "Z";
+  
+              const gameDate = new Date(iso8601Time);
+              const gameDateLocal = new Date(gameDate.getTime() + timeZoneOffset * 60000);
+              console.log("game Date Local: " + gameDateLocal);
+
+              const bufferTime = 4 * 60 * 60 * 1000;
+
+              const selectedDateTime = new Date(selectedTime.date);
+              console.log("selected Date Time: " + selectedDateTime);
+              const timeParts = selectedTime.time.split(":");
+              console.log("selected time parts : " + timeParts);
+              selectedDateTime.setHours(parseInt(timeParts[0]));
+              selectedDateTime.setMinutes(parseInt(timeParts[1]));
+
+
+               // Apply the time zone offset
+              const selectedTimeInLocal = new Date(selectedDateTime.getTime() + timeZoneOffset * 60000);
+
+
+              console.log("selected Time in Local :" + selectedTimeInLocal);
+              setSelectedTime(selectedTimeInLocal);
+
+    
+              
+              return gameDateLocal >= selectedTimeInLocal - bufferTime;
+            });
+
+            // Update selectedTeamSchedule with the filtered upcoming games
+            setSelectedTeamSchedule(upcomingGames);
+          })
+          .catch((err) => {
+            console.error("ERROR FETCHING TEAM DATA:", err);
+          });
+      }
     };
+  */
+
+    const handleTimeZoneChange = (selectedTime) => {
+      if (selectedSport && selectedTeam) {
+        axios.get(`http://localhost:8000/${selectedSport}/schedule/${selectedTeam}/`)
+          .then((res) => {
+            setTeamData(res.data);
+    
+            const timeZoneParts = selectedTime.selectedTimeZone.split(":");
+            const timeZoneOffset = (parseInt(timeZoneParts[0]) * 60 + parseInt(timeZoneParts[1]));
+
+            setSelectedTimeZone(timeZoneOffset);
+    
+            const upcomingGames = res.data.filter((game) => {
+              const originalTime = game.time;
+    
+              // Parse the original time as a UTC date
+              const gameDate = new Date(originalTime + "Z");
+    
+              // Parse the selected date and time as a UTC date
+              const selectedDateTime = new Date(
+                Date.UTC(
+                  selectedTime.date.substring(0, 4), // Year
+                  selectedTime.date.substring(5, 7) - 1, // Month (0-indexed)
+                  selectedTime.date.substring(8, 10), // Day
+                  selectedTime.time.substring(0, 2), // Hours
+                  selectedTime.time.substring(3, 5) // Minutes
+                )
+              );
+    
+              // Apply the time zone offset to selectedDateTime
+              selectedDateTime.setTime(selectedDateTime.getTime() - timeZoneOffset * 60000);
+
+              setSelectedTime(selectedDateTime);
+    
+              const bufferTime = 4 * 60 * 60 * 1000;
+    
+              return gameDate >= selectedDateTime - bufferTime;
+            });
+    
+            // Update selectedTeamSchedule with the filtered upcoming games
+            setSelectedTeamSchedule(upcomingGames);
+          })
+          .catch((err) => {
+            console.error("ERROR FETCHING TEAM DATA:", err);
+          });
+      }
+    };
+    
     
   
     selectedTeamSchedule.sort((a, b) => new Date(a.time) - new Date(b.time));
@@ -115,7 +239,7 @@
         <h3 className="instructions">The data used to determine the channel does not account for blackouts, and local networks.</h3>
         <TeamNavigationBar teams={getTeamList(selectedSport)} onTeamClick={handleTeamSelect} />
         <SportNavigationBar selectedSport={selectedSport} onSportSelect = {handleSportSelect} />
-        <TimeZoneSwitch onTimeZoneChange={handleTimeZoneChange} timezoneSwitchOn={false} />
+        <TimeZoneSwitch onTimeZoneChange={handleTimeZoneChange} timeZoneSwitchOn={false} />
         {/* Display team data based on the selectedTeam and teamData */}
 
         {/* block to show the next/current game.*/}
@@ -142,13 +266,13 @@
               {selectedTeamSchedule.length > 0 &&
               <div className="next-game-row-game-info">
                 <div className="next-game-cell next-game-date">
-                  <span>{convertToLocalDateString(selectedTeamSchedule[0].time)}</span>
+                  <span>{convertToLocalDateString(selectedTeamSchedule[0].time, selectedTimeZone)}</span>
                 </div>
                 <div className="next-game-cell next-game-opponent">
                   <span>{selectedTeamSchedule[0].opponent}</span>
                 </div>
                 <div className="next-game-cell next-game-time">
-                  <span>{convertToLocalTimeString(selectedTeamSchedule[0].time)}</span>
+                  <span>{convertToLocalTimeString(selectedTeamSchedule[0].time, selectedTimeZone)}</span>
                 </div>
                 <div className="next-game-cell next-game-channel">
                   <span>{selectedTeamSchedule[0].channel.replace(/[\[\]']+/g, '')}</span>
@@ -188,13 +312,13 @@
                     .map((game, index) => (
                       <tr key={index} className="game-data">
                         <td className="date">
-                          <span>{convertToLocalDateString(game.time)}</span>
+                          <span>{convertToLocalDateString(game.time, selectedTimeZone)}</span>
                         </td>
                         <td className="opponent">
                           <span>{game.opponent}</span>
                         </td>
                         <td className="time">
-                          <span>{convertToLocalTimeString(game.time)}</span>
+                          <span>{convertToLocalTimeString(game.time, selectedTimeZone)}</span>
                         </td>
                         <td className="channel">
                           <span>{game.channel.replace(/[\[\]']+/g, '')}</span>
