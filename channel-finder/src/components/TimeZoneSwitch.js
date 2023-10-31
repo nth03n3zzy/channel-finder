@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import App from "../App";
 import './TimeZoneSwitch.css'
 
 const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
@@ -43,15 +44,16 @@ const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
       const time = `${hours}:${formattedMinutes}`;
       
       setSelectedTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone); // Get the user's time zone
-      console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      //console.log(Intl.DateTimeFormat().resolvedOptions().timeZone);
       setTimeGodData({ ...timeGodData, time, ampm, date: userDate.toISOString().split('T')[0], selectedTimeZone });
     }, []); // The empty dependency array ensures this effect runs only once
 
 
-  const handleTimeZoneSwitch = () => {
-    setShowTimeZoneMenu(!showTimeZoneMenu);
-    setUseTimeGod(!useTimeGod); // Toggle the "Time God" switch
-  };
+    const handleTimeZoneSwitch = () => {
+      setShowTimeZoneMenu(!showTimeZoneMenu);
+      // Toggle the value of useTimeGod
+      setUseTimeGod((prevUseTimeGod) => !prevUseTimeGod);
+    };
   const handleTimeZoneChange = (event) => {
     const selectedTimezoneName = event.target.value;
     const selectedTimezone = timeZonesWithOffsets.find((tz) => tz.name === selectedTimezoneName);
@@ -65,7 +67,6 @@ const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
         selectedTimeZone: offset,
       }));
 
-      console.log(selectedTimeZone + " " + timeGodData)
     }
   };
 
@@ -79,7 +80,7 @@ const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
 
   const handleApplyClick = () => {
     const selectedTime = useTimeGod ? timeGodData : null; 
-    console.log(timeGodData)
+    onTimeZoneChange(selectedTime);
 
   };
 
