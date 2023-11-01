@@ -50,9 +50,11 @@ const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
 
 
     const handleTimeZoneSwitch = () => {
-      setShowTimeZoneMenu(!showTimeZoneMenu);
       // Toggle the value of useTimeGod
-      setUseTimeGod((prevUseTimeGod) => !prevUseTimeGod);
+      setUseTimeGod(!useTimeGod);
+      setShowTimeZoneMenu(!showTimeZoneMenu);
+      const selectedTime = null; 
+      onTimeZoneChange(selectedTime);
     };
   const handleTimeZoneChange = (event) => {
     const selectedTimezoneName = event.target.value;
@@ -88,7 +90,7 @@ const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
     <div className="time-zone-switch">
       <label>
         Use "Time God" Settings:
-        <input type="checkbox" checked={useTimeGod} onChange={handleTimeZoneSwitch} />
+        <input type="checkbox" id="checkbox" checked={useTimeGod} onChange={handleTimeZoneSwitch} />
       </label>
       {showTimeZoneMenu && (
         <div className="time-zone-menu">

@@ -5,6 +5,7 @@
   import './App.css'; 
   import axios from "axios";  
   import TimeZoneSwitch from "./components/TimeZoneSwitch.js";
+import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons";
 
 
 
@@ -14,7 +15,7 @@
     const [userTimeZoneOffset, setUserTimeZoneOffset] = useState(0); // initialize with 0
     const [selectedTeamSchedule, setSelectedTeamSchedule] = useState ([]); // array to hold schedule to help filtering out expired games
     const [selectedSport, setSelectedSport] = useState("NBA") // team navigation bar initialize with NBA
-    const [selectedTime, setSelectedTime] = useState(null); // Define selectedTime
+    const [timeGodMode, setTimeGodMode] = useState(false); // Define selectedTime
     const [selectedTimeZone, setSelectedTimeZone] = useState(null);
     //switch case for when different sports are selected
     function getTeamList(selectedSport) {
@@ -34,6 +35,8 @@
     
     //when a team is selected
     const handleTeamSelect = (teamAbbreviation) => {
+      setSelectedTeam(null);
+      setSelectedTimeZone(userTimeZoneOffset);
       setSelectedTeam(teamAbbreviation);
       // team abbreviation is passed to back end >>>>>>>need to add sport for common abbreviations across sports<<<<<<<<<<<<<<<,
       axios.get(`http://localhost:8000/${selectedSport}/schedule/${teamAbbreviation}/`)
@@ -50,14 +53,14 @@
   
           const gameDate = new Date(iso8601Time);
         
-          const gameDateLocal = new Date(gameDate.getTime() + userTimeZoneOffset * 60000);
+          //const gameDateLocal = new Date(gameDate.getTime() + userTimeZoneOffset * 60000);
           const bufferTime = 4 * 60 * 60 * 1000;
 
-          return gameDateLocal >= currentDate - bufferTime;
+          return gameDate >= currentDate - bufferTime;
         });
         setSelectedTeamSchedule(upcomingGames); // set the selected teams schedule 
         //console.log("Team Data:", res.data);
-        //console.log("selected team games that havent occured:", upcomingGames)
+        console.log("selected team games that havent occured:", upcomingGames)
       })
       .catch((err) => {
         console.error("ERROR FETCHING TEAM DATA:", err);
@@ -120,10 +123,6 @@
 
       return `${localDateStr}`;
     };
-    const findTeamName = (selectedSport) => {
-      const selectedSportFormatted = selectedSport.charAt(0).toUpperCase() + selectedSport.slice(1).toLowerCase();
-      return selectedSportFormatted
-    }
     /*
     const handleTimeZoneChange = (selectedTime) => {
       // Handle the selected time here
@@ -184,6 +183,9 @@
   */
 
     const handleTimeZoneChange = (selectedTime) => {
+      if (selectedTime == null){
+        handleTeamSelect(selectedTeam);
+      } else {
       if (selectedSport && selectedTeam) {
         axios.get(`http://localhost:8000/${selectedSport}/schedule/${selectedTeam}/`)
           .then((res) => {
@@ -213,8 +215,6 @@
     
               // Apply the time zone offset to selectedDateTime
               selectedDateTime.setTime(selectedDateTime.getTime() - timeZoneOffset * 60000);
-
-              setSelectedTime(selectedDateTime);
     
               const bufferTime = 4 * 60 * 60 * 1000;
     
@@ -228,10 +228,9 @@
             console.error("ERROR FETCHING TEAM DATA:", err);
           });
       }
+    }
     };
     
-    
-  
     selectedTeamSchedule.sort((a, b) => new Date(a.time) - new Date(b.time));
     return (
       <div className='app-container'>
@@ -239,7 +238,7 @@
         <h3 className="instructions">The data used to determine the channel does not account for blackouts, and local networks.</h3>
         <TeamNavigationBar teams={getTeamList(selectedSport)} onTeamClick={handleTeamSelect} />
         <SportNavigationBar selectedSport={selectedSport} onSportSelect = {handleSportSelect} />
-        <TimeZoneSwitch onTimeZoneChange={handleTimeZoneChange} timeZoneSwitchOn={false} />
+        <TimeZoneSwitch onTimeZoneChange={handleTimeZoneChange} timeZoneSwitchOn={timeGodMode} />
         {/* Display team data based on the selectedTeam and teamData */}
 
         {/* block to show the next/current game.*/}
