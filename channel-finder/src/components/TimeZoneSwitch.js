@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import App from "../App";
 import './TimeZoneSwitch.css'
 
 const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {

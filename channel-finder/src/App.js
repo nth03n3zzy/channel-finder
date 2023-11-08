@@ -5,7 +5,6 @@
   import './App.css'; 
   import axios from "axios";  
   import TimeZoneSwitch from "./components/TimeZoneSwitch.js";
-import { faLessThanEqual } from "@fortawesome/free-solid-svg-icons";
 
 
 
