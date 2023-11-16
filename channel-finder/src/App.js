@@ -35,10 +35,10 @@
     
     //when a team is selected
     const handleTeamSelect = (teamAbbreviation) => {
-      setSelectedTeam(null);
+      
       setSelectedTimeZone(userTimeZoneOffset);
       setSelectedTeam(teamAbbreviation);
-      // team abbreviation is passed to back end >>>>>>>need to add sport for common abbreviations across sports<<<<<<<<<<<<<<<,
+      // team abbreviation is passed to back end to retrieve data for that team
       axios.get(`http://localhost:8000/${selectedSport}/schedule/${teamAbbreviation}/`)
       .then((res) => {
         setTeamData(res.data);
@@ -74,16 +74,21 @@
       setSelectedTeam(null); // Clear the selected team when switching sports
     };
 
-
+    /* function to reload the schedule when the apply button is clicked when using time god mode */
     const handleTimeZoneChange = (selectedTime) => {
+      // we are checking if a time is selected in time god mode. if not we just run the regular team select which uses the 
+      // users time.
       if (selectedTime == null){
         handleTeamSelect(selectedTeam);
       } else {
+      // we check to ensure there is a selected sport and team to fetch a schedule for.
       if (selectedSport && selectedTeam) {
+        // we use axios to call on the back end and get the schedule. return the data and set Team Data with the data retrieved.
         axios.get(`http://localhost:8000/${selectedSport}/schedule/${selectedTeam}/`)
           .then((res) => {
             setTeamData(res.data);
-    
+            
+            //splitting up the selected time to get the timezone
             const timeZoneParts = selectedTime.selectedTimeZone.split(":");
             const timeZoneOffset = (parseInt(timeZoneParts[0]) * 60 + parseInt(timeZoneParts[1]));
 
@@ -124,7 +129,8 @@
     }
     }; 
 
-    
+    /* due to NFL and NHL game schedules being scraped after the season started those games were put in the database not 
+      necessarily in order by date. so we sorth the schedule by date to ensure games are displayed to the user in order */
     selectedTeamSchedule.sort((a, b) => new Date(a.time) - new Date(b.time));
     return (
       <div className='app-container'>
@@ -133,8 +139,7 @@
         <TeamNavigationBar teams={getTeamList(selectedSport)} onTeamClick={handleTeamSelect} />
         <SportNavigationBar selectedSport={selectedSport} onSportSelect = {handleSportSelect} />
         <TimeZoneSwitch onTimeZoneChange={handleTimeZoneChange} timeZoneSwitchOn={timeGodMode} />
-        {/* Display team data based on the selectedTeam and teamData */}
-
+        
         {/* block to show the next/current game.*/}
         {selectedTeam && teamData && (
           <div className="team-data">
