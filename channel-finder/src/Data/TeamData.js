@@ -89,6 +89,7 @@ export const NbaTeamList = [
     { abbreviation: 'PHI', name: 'Philadelphia Flyers', sport: 'NHL' },
     { abbreviation: 'PIT', name: 'Pittsburgh Penguins', sport: 'NHL' },
     { abbreviation: 'SJS', name: 'San Jose Sharks', sport: 'NHL' },
+    { abbreviation: 'SEA', name: 'Seattle Kraken', sport: 'NHL'},
     { abbreviation: 'STL', name: 'St. Louis Blues', sport: 'NHL' },
     { abbreviation: 'TBL', name: 'Tampa Bay Lightning', sport: 'NHL' },
     { abbreviation: 'TOR', name: 'Toronto Maple Leafs', sport: 'NHL' },

@@ -2,6 +2,7 @@
   import SportNavigationBar from "./components/SportNavigationBar.js";
   import TeamNavigationBar from './components/TeamNavigationBar.js';
   import {NbaTeamList, NflTeamList, NhlTeamList, MlbTeamList} from "./Data/TeamData.js";
+  import { convertToLocalDateString, convertToLocalTimeString} from "./Data/DateUtils.js";
   import './App.css'; 
   import axios from "axios";  
   import TimeZoneSwitch from "./components/TimeZoneSwitch.js";
@@ -58,8 +59,6 @@
           return gameDate >= currentDate - bufferTime;
         });
         setSelectedTeamSchedule(upcomingGames); // set the selected teams schedule 
-        //console.log("Team Data:", res.data);
-        console.log("selected team games that havent occured:", upcomingGames)
       })
       .catch((err) => {
         console.error("ERROR FETCHING TEAM DATA:", err);
@@ -70,116 +69,11 @@
       setUserTimeZoneOffset(new Date().getTimezoneOffset() * -1);
     }, []);
 
-    // function to convert UTC from the users local time.
-    
-    const convertToLocalTimeString = (utcTime, selectedTimeZone) => {
-      const utcDate = new Date(utcTime);
-      let timeZone;
-
-      if (selectedTimeZone == null) {
-        timeZone = userTimeZoneOffset;
-      } else {
-        timeZone = selectedTimeZone;
-      }
-
-      //if (TimeZoneSwitch)
-      const localDate = new Date(utcDate.getTime() + timeZone * 60000);
-      
-
-      const localTimeStr = localDate.toLocaleTimeString(undefined, {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true,
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Set the user's timezone
-      });
-
-      return `${localTimeStr}`;
-    };
     const handleSportSelect = (sport) => {
       setSelectedSport(sport);
       setSelectedTeam(null); // Clear the selected team when switching sports
     };
-    // uses the game time converts the time to the local users time and converts the games date is different due to time change 
-    const convertToLocalDateString = (utcTime, selectedTimeZone) => {
-      const utcDate = new Date(utcTime);
-      let timeZone;
 
-      if (selectedTimeZone == null) {
-        timeZone = userTimeZoneOffset;
-      } else {
-        timeZone = selectedTimeZone;
-      }
-      //if (TimeZoneSwitch)
-      const localDate = new Date(utcDate.getTime() + timeZone * 60000);
-
-
-      const localDateStr = localDate.toLocaleDateString(undefined, {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Set the user's timezone
-      });
-
-      return `${localDateStr}`;
-    };
-    /*
-    const handleTimeZoneChange = (selectedTime) => {
-      // Handle the selected time here
-      console.log("Selected Time:", selectedTime);
-
-    
-      if (selectedSport && selectedTeam) {
-        console.log(selectedTeam + selectedSport)
-        axios.get(`http://localhost:8000/${selectedSport}/schedule/${selectedTeam}/`)
-          .then((res) => {
-            setTeamData(res.data);
-
-            const timeZoneParts = selectedTime.selectedTimeZone.split(":");
-            const timeZoneOffset = parseInt(timeZoneParts[0]) * 60 + parseInt(timeZoneParts[1]);
-            console.log("time Zone Offset " + timeZoneOffset);  
-        
-            
-            const upcomingGames = res.data.filter((game) => {
-            
-              const originalTime = game.time;
-
-              const iso8601Time = originalTime.replace(" ", "T") + "Z";
-  
-              const gameDate = new Date(iso8601Time);
-              const gameDateLocal = new Date(gameDate.getTime() + timeZoneOffset * 60000);
-              console.log("game Date Local: " + gameDateLocal);
-
-              const bufferTime = 4 * 60 * 60 * 1000;
-
-              const selectedDateTime = new Date(selectedTime.date);
-              console.log("selected Date Time: " + selectedDateTime);
-              const timeParts = selectedTime.time.split(":");
-              console.log("selected time parts : " + timeParts);
-              selectedDateTime.setHours(parseInt(timeParts[0]));
-              selectedDateTime.setMinutes(parseInt(timeParts[1]));
-
-
-               // Apply the time zone offset
-              const selectedTimeInLocal = new Date(selectedDateTime.getTime() + timeZoneOffset * 60000);
-
-
-              console.log("selected Time in Local :" + selectedTimeInLocal);
-              setSelectedTime(selectedTimeInLocal);
-
-    
-              
-              return gameDateLocal >= selectedTimeInLocal - bufferTime;
-            });
-
-            // Update selectedTeamSchedule with the filtered upcoming games
-            setSelectedTeamSchedule(upcomingGames);
-          })
-          .catch((err) => {
-            console.error("ERROR FETCHING TEAM DATA:", err);
-          });
-      }
-    };
-  */
 
     const handleTimeZoneChange = (selectedTime) => {
       if (selectedTime == null){
@@ -228,7 +122,8 @@
           });
       }
     }
-    };
+    }; 
+
     
     selectedTeamSchedule.sort((a, b) => new Date(a.time) - new Date(b.time));
     return (
@@ -264,13 +159,13 @@
               {selectedTeamSchedule.length > 0 &&
               <div className="next-game-row-game-info">
                 <div className="next-game-cell next-game-date">
-                  <span>{convertToLocalDateString(selectedTeamSchedule[0].time, selectedTimeZone)}</span>
+                  <span>{convertToLocalDateString(selectedTeamSchedule[0].time, selectedTimeZone, userTimeZoneOffset)}</span>
                 </div>
                 <div className="next-game-cell next-game-opponent">
                   <span>{selectedTeamSchedule[0].opponent}</span>
                 </div>
                 <div className="next-game-cell next-game-time">
-                  <span>{convertToLocalTimeString(selectedTeamSchedule[0].time, selectedTimeZone)}</span>
+                  <span>{convertToLocalTimeString(selectedTeamSchedule[0].time, selectedTimeZone, userTimeZoneOffset)}</span>
                 </div>
                 <div className="next-game-cell next-game-channel">
                   <span>{selectedTeamSchedule[0].channel.replace(/[\[\]']+/g, '')}</span>
@@ -310,13 +205,13 @@
                     .map((game, index) => (
                       <tr key={index} className="game-data">
                         <td className="date">
-                          <span>{convertToLocalDateString(game.time, selectedTimeZone)}</span>
+                          <span>{convertToLocalDateString(game.time, selectedTimeZone, userTimeZoneOffset)}</span>
                         </td>
                         <td className="opponent">
                           <span>{game.opponent}</span>
                         </td>
                         <td className="time">
-                          <span>{convertToLocalTimeString(game.time, selectedTimeZone)}</span>
+                          <span>{convertToLocalTimeString(game.time, selectedTimeZone, userTimeZoneOffset)}</span>
                         </td>
                         <td className="channel">
                           <span>{game.channel.replace(/[\[\]']+/g, '')}</span>
