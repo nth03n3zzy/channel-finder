@@ -1,3 +1,4 @@
+  // component for rendering the next game display and team schedule displays
   import React from "react";
   import "./GameDisplay.css"
   import { convertToLocalDateString, convertToLocalTimeString } from "../Data/DateUtils.js";

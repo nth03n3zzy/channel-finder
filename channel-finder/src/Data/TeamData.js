@@ -1,4 +1,4 @@
-
+// file contians all team three letter abreviations full names and their respective sport  
 export const NbaTeamList = [
     { abbreviation: 'ATL', name: 'Atlanta Hawks', sport: 'NBA' },
     { abbreviation: 'BOS', name: 'Boston Celtics', sport: 'NBA' },

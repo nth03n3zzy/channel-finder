@@ -6,7 +6,7 @@
   import TimeZoneSwitch from "./components/TimeZoneSwitch.js";
   import {NextGameDisplay, ScheduleGameDisplay, getTeamList} from "./components/GameDisplay.js"
 
-
+// initialize variables used throughout app.js
 
   const App = () => {
     const [selectedTeam, setSelectedTeam] = useState(null);
@@ -115,7 +115,7 @@
     }; 
 
     /* due to NFL and NHL game schedules being scraped after the season started those games were put in the database not 
-      necessarily in order by date. so we sorth the schedule by date to ensure games are displayed to the user in order */
+      necessarily in order by date. so we sort the schedule by date to ensure games are displayed to the user in order */
     selectedTeamSchedule.sort((a, b) => new Date(a.time) - new Date(b.time));
     return (
       <div className='app-container'>

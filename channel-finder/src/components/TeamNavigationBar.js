@@ -1,3 +1,4 @@
+// component to render the team navigation bar 
 import React, { useEffect } from 'react';
 import './TeamNavigationbar.css';
 

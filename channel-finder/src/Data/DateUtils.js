@@ -1,8 +1,8 @@
-
+// file with functions to cnovert dates from date objects in UTC to strings in the correct time zonr
 export function convertToLocalTimeString (utcTime, selectedTimeZone, userTimeZoneOffset) {
     const utcDate = new Date(utcTime);
     let timeZone;
-
+    //selected time will be null if we are not usigng time god mode
     if (selectedTimeZone == null) {
       timeZone = userTimeZoneOffset;
     } else {
