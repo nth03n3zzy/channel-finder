@@ -24,7 +24,7 @@
       setSelectedTimeZone(userTimeZoneOffset);
       setSelectedTeam(teamAbbreviation);
       // team abbreviation is passed to back end to retrieve data for that team
-      axios.get(`http://localhost:8000/${selectedSport}/schedule/${teamAbbreviation}/`)
+      axios.get(`https://channel-finder-9120a5502c33.herokuapp.com/${selectedSport}/schedule/${teamAbbreviation}/`)
       .then((res) => {
         setTeamData(res.data);
         // logic to determin what games are upcoming and what games have already occured with a four hour buffer
@@ -69,7 +69,7 @@
       // we check to ensure there is a selected sport and team to fetch a schedule for.
       if (selectedSport && selectedTeam) {
         // we use axios to call on the back end and get the schedule. return the data and set Team Data with the data retrieved.
-        axios.get(`http://localhost:8000/${selectedSport}/schedule/${selectedTeam}/`)
+        axios.get(`https://channel-finder-9120a5502c33.herokuapp.com/${selectedSport}/schedule/${selectedTeam}/`)
           .then((res) => {
             setTeamData(res.data);
             

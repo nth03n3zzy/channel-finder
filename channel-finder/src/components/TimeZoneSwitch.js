@@ -105,12 +105,12 @@ const TimeZoneSwitch = ({ onTimeZoneChange, timezoneSwitchOn }) => {
           {/* "Time God" input fields */}
           {useTimeGod && (
             <div className="time-god-fields">
-              <input class="date-field"
+              <input className="date-field"
                 type="date"
                 value={timeGodData.date}
                 onChange={handleDateChange}
               />
-              <input class = "time-field"
+              <input className = "time-field"
                 type="time"
                 value={timeGodData.time}
                 onChange={handleTimeChange}
