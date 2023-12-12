@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/channel-finder/static/css/main.6c3629e7.css",
+    "main.css": "/channel-finder/static/css/main.a30ae321.css",
     "main.js": "/channel-finder/static/js/main.a6e3988b.js",
     "static/js/787.2c1f4b0e.chunk.js": "/channel-finder/static/js/787.2c1f4b0e.chunk.js",
     "index.html": "/channel-finder/index.html",
-    "main.6c3629e7.css.map": "/channel-finder/static/css/main.6c3629e7.css.map",
+    "main.a30ae321.css.map": "/channel-finder/static/css/main.a30ae321.css.map",
     "main.a6e3988b.js.map": "/channel-finder/static/js/main.a6e3988b.js.map",
     "787.2c1f4b0e.chunk.js.map": "/channel-finder/static/js/787.2c1f4b0e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6c3629e7.css",
+    "static/css/main.a30ae321.css",
     "static/js/main.a6e3988b.js"
   ]
 }
