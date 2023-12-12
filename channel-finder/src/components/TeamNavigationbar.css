@@ -1394,11 +1394,12 @@
     
     /* Use these selectors to toggle the display of full team names */
     .team-navigation-item:hover .team-abbreviation {
-      display: none;
+      display: block;
+      font-size: 20px;
     }
     
     .team-navigation-item:hover .team-name {
-      display: block;
+      display: none;
     }
     
   }

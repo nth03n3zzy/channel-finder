@@ -41,4 +41,76 @@
     border-bottom: 1px solid #ccc;
     border-bottom-right-radius: 15px;
   }
+ 
+/* Media query for mobile screens (less than 767px) */
+@media (max-width: 767px) {
+  .next-game-cell {
   
+
+    flex-direction: column; /* Change flex direction for smaller screens */
+    padding: 5px; /* Adjust padding */
+    font-size: 16px; /* Modify font size */
+    font-weight: 500; /* Adjust font weight */
+  }
+
+  /* Adjust headers and content for smaller screens */
+  .next-game-date-header,
+  .next-game-opponent-header,
+  .next-game-time-header,
+  .next-game-channel-header,
+  .next-game-date,
+  .next-game-opponent,
+  .next-game-time,
+  .next-game-channel {
+    font-size: 16px; /* Modify font size */
+    padding: 5px; 
+    line-height: 1;
+  }
+  .next-game-date-header{
+    border-left: 1px solid #CCC;
+    border-top-left-radius: 15px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+  .next-game-date{
+    border-left: 1px solid #CCC;
+    border-top-right-radius: 15px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-bottom-left-radius: 0;
+    border-right: 1px solid #ccc;
+  }
+  .next-game-date{
+    border-bottom-left-radius: 0;
+
+  }
+  .next-game-opponent-header{
+    border-left: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
+  }
+  .next-game-opponent{
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+  }
+  .next-game-time-header{
+    border-left: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
+  }
+  .next-game-time{
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+  }
+  .next-game-channel-header{
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 15px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+  .next-game-channel{
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+  }
+}
