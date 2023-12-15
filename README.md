@@ -126,8 +126,7 @@ API Documentation:
 
 Deployment:
 
-    ******************* PENDING
-
+    The backend is deployed on heroku, the front end on githup pages. https://nth03n3zzy.github.io/channel-finder
 Known Issues:
 
     There is no support or account for local markets, it is very hard to find a complete data set for local markets. If someone knows of one please feel free to reach out to me.
